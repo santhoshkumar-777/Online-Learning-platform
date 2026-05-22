@@ -1,10 +1,13 @@
-name: Deploy to Cloudflare Workers
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -26,9 +29,8 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v3
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --config wrangler.jsonc
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
